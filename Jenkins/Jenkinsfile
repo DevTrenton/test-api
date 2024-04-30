@@ -21,10 +21,7 @@ pipeline {
         }
         stage('Deploy Docker Compose'){
             steps {
-                script {
-                    remote.password = env.GIT_CREDENTIALS_PSW
-                }
-                sshCommand(remote: remote, command: "echo '${remote.password}' | sudo -S docker compose up -d")
+                sshCommand(remote: remote, command: "echo \$GIT_CREDENTIALS_PSW | sudo -S docker compose up -d")
             }
         }
     }
