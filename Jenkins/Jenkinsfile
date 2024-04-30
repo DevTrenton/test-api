@@ -5,17 +5,24 @@ remote.allowAnyHosts = true
 
 pipeline {
     agent any
-    
+
     stages {
         stage('Connect to Server') {
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'devadmin', passwordVariable: 'password', usernameVariable: 'username')]) {
-                        sh "sshpass -p '${password}' ssh -o StrictHostKeyChecking=no ${username}@${remote.host}"
+                        sh """
+                            /usr/bin/expect -c '
+                            spawn ssh -o StrictHostKeyChecking=no ${env.username}@${remote.host}
+                            expect "password:"
+                            send "${env.password}\r"
+                            interact
+                            '
+                        """
                     }
                 }
             }
-        }
+        }       
         stage('Deploy to Server'){
             steps{
                 script{
