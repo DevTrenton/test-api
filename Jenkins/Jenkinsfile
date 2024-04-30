@@ -11,14 +11,27 @@ pipeline {
     }
 
     stages {
-        stage('Deploying to Server') {
+        stage('Connecting to Server') {
             steps {
                 script {
                     remote.user = env.DEV_CREDENTIALS_USR
                     remote.password = env.DEV_CREDENTIALS_PSW
                 }
-                sshCommand(remote: remote, command: "ls -l")
+                echo "Connected to ${remote}"
+            }
+        }
+        stage('Accessing Projects'){
+            steps{
                 sshCommand(remote: remote, command: "cd projects")
+            }
+        }
+        stage('Accessing NIB-Online-Portal'){
+            steps{
+                sshCommand(remote: remote, command: "cd deploy-nib-online")
+            }
+        }
+        stage('Deploying Docker Compose'){
+            steps{
                 sshCommand(remote: remote, command: "ls -l")
             }
         }
