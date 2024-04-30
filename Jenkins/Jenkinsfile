@@ -18,6 +18,7 @@ pipeline {
                     remote.password = env.DEV_CREDENTIALS_PSW
                 }
                 sshCommand(remote: remote, command: "cd projects")
+                sshCommand(remote: remote, command: "ls -l")
             }
         }
     }
