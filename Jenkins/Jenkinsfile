@@ -29,9 +29,10 @@ pipeline {
                 """)
             }
         }
-        stage('Deploying Docker Compose')
+        stage('Deploying Docker Compose'){
             steps{
                 sshCommand(remote: remote, command: "sudo docker compose up -d")
             }
+        }
     }
 }
