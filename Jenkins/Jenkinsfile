@@ -11,12 +11,17 @@ pipeline {
     }
 
     stages {
-        stage('Deploying to Server') {
+        stage('Connecting to Server') {
             steps {
                 script {
                     remote.user = env.DEV_CREDENTIALS_USR
                     remote.password = env.DEV_CREDENTIALS_PSW
                 }
+                echo "Connected to ${remote.host}"
+            }
+        }
+        stage('Navigating to Docker Compose Directory'){
+            steps{
                 sshCommand(remote: remote, command: """
                     ls -l
                     cd /projects/deploy-nib-online/admin-portal
@@ -24,5 +29,9 @@ pipeline {
                 """)
             }
         }
+        stage('Deploying Docker Compose')
+            steps{
+                sshCommand(remote: remote, command: "sudo docker compose up -d")
+            }
     }
 }
