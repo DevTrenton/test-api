@@ -1,0 +1,30 @@
+def remote = [:]
+remote.name = 'devadmin'
+remote.host = '192.168.100.123'
+remote.allowAnyHosts = true
+
+pipeline {
+    agent any
+    environment {
+        DEV_CREDENTIALS = credentials('devadmin')
+        GIT_CREDENTIALS = credentials('gitToken')
+    }
+    stages {
+        stage('Upload Docker Compose to Server') {
+            steps {
+                script {
+                    remote.user = env.DEV_CREDENTIALS_USR
+                    remote.password = env.DEV_CREDENTIALS_PSW
+                }
+                sshCommand(remote: remote, command: "sudo docker compose up -d")
+            }
+        }
+        stage('Git Authenticate') {
+            steps {
+                script {
+                    remote.password = env.GIT_CREDENTIALS_PSW
+                }
+            }
+        }
+    }
+} 
