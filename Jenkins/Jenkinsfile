@@ -22,6 +22,7 @@ pipeline {
         }
         stage('Accessing Projects'){
             steps{
+                sshCommand(remote: remote, command: "ls -l")
                 sshCommand(remote: remote, command: "cd projects")
             }
         }
