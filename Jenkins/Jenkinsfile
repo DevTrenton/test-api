@@ -19,6 +19,7 @@ pipeline {
                 }
                 sshCommand(remote: remote, command: "ls -l")
                 sshCommand(remote: remote, command: "cd projects")
+                sshCommand(remote: remote, command: "ls -l")
             }
         }
     }
