@@ -10,13 +10,21 @@ pipeline {
         GIT_CREDENTIALS = credentials('gitToken')
     }
     stages {
-        stage('Upload Docker Compose to Server') {
+        stage('Connect to Server') {
             steps {
                 script {
                     remote.user = env.DEV_CREDENTIALS_USR
                     remote.password = env.DEV_CREDENTIALS_PSW
                 }
-                sshCommand(remote: remote, remote.password = env.GIT_CREDENTIALS_PSW, command: "echo '${remote.password}' | sudo -S docker compose up -d")
+                echo "Connecting to ${remote.host}"
+            }
+        }
+        stage('Deploy Docker Compose'){
+            steps {
+                script {
+                    remote.password = env.GIT_CREDENTIALS_PSW
+                }
+                sshCommand(remote: remote, command: "echo '${remote.password}' | sudo -S docker compose up -d")
             }
         }
     }
