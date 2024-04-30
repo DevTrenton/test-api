@@ -7,6 +7,7 @@ pipeline {
     agent any
     environment {
         DEV_CREDENTIALS = credentials('devadmin')
+        GIT_CREDENTIALS = credentials('gitToken')
     }
     stages {
         stage('Upload Docker Compose to Server') {
@@ -15,7 +16,7 @@ pipeline {
                     remote.user = env.DEV_CREDENTIALS_USR
                     remote.password = env.DEV_CREDENTIALS_PSW
                 }
-                sshCommand(remote: remote, command: "sudo docker compose up -d")
+                sshCommand(remote: remote, remote.password = env.GIT_CREDENTIALS_PSW, command: "echo '${remote.password}' | sudo -S docker compose up -d")
             }
         }
     }
