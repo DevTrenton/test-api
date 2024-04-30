@@ -5,20 +5,15 @@ remote.allowAnyHosts = true
 
 pipeline {
     agent any
-    environment {
-        DEV_CREDENTIALS = credentials('devadmin')
-        GIT_CREDENTIALS = credentials('gitToken')
-    }
     
     stages {
         stage('Connect to Server') {
             steps {
                 script {
-                    sshagent(credentials: ['devadmin']) {
-                        sh "sshpass -p '${env.DEV_CREDENTIALS_PSW}' ssh -o StrictHostKeyChecking=no ${env.DEV_CREDENTIALS_USR}@${remote.host}"
+                    withCredentials([usernamePassword(credentialsId: 'devadmin', passwordVariable: 'password', usernameVariable: 'username')]) {
+                        sh "sshpass -p '${password}' ssh -o StrictHostKeyChecking=no ${username}@${remote.host}"
                     }
                 }
-                echo "Connected to ${remote.host}"
             }
         }
         stage('Deploy to Server'){
