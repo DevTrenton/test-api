@@ -17,7 +17,7 @@ pipeline {
                     remote.user = env.DEV_CREDENTIALS_USR
                     remote.password = env.DEV_CREDENTIALS_PSW
                 }
-                sshCommand remote: remote, command: "Connected to ${remote.host}"
+                echo "Connected to ${remote.host}"
             }
         }
         stage('Navigating to Docker Compose Directory'){
