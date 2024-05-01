@@ -28,10 +28,10 @@ pipeline {
                     remote.user = env.DEV_CREDENTIALS_USR
                     remote.password = env.DEV_CREDENTIALS_PSW
                 }
-                sshCommand (remote: remote, sudo: true, command: """
+                sshCommand (remote: remote, command: """
                     cd ~/projects/deploy-nib-online/admin-portal
-                    echo '${T_PASS}' | sudo docker compose down 
-                    echo '${T_PASS}' | sudo docker compose up -d
+                    echo ${T_PASS} | sudo docker compose down 
+                    echo ${T_PASS} | sudo docker compose up -d
                     """
                     )
                 }
