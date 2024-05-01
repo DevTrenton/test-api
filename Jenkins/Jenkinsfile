@@ -1,5 +1,5 @@
 def remote = [:]
-remote.name = 'devadmin'
+remote.name = 'staging-server'
 remote.host = '192.168.100.123'
 remote.allowAnyHosts = true
 
@@ -14,16 +14,19 @@ pipeline {
         stage('Deploying Docker Compose to Staging Server') {
             steps {
                 script {
-                    remote.user = env.DEV_CREDENTIALS_USR
-                    remote.password = env.DEV_CREDENTIALS_PSW
+                    withCredentials([sshUserPrivateKey(credentialsID: 'newdevadmin', keyFileVariable: 'SSH_KEY', usernameVariable: 'SSH_USER')]) {
+                        remote.user = SSH_USER,
+                        remote.password = SSH_KEY
+                        remote.identityfile = SSH_KEY
                 }
-                sshCommand (remote: remote, override: true, command: """
+                sshCommand (remote: remote, command: """
                     cd ~/projects/deploy-nib-online/admin-portal
-                    echo ${remote.password} | sudo -S docker compose down
-                    echo ${remote.password} | sudo -S docker compose up -d
+                    sudo docker compose down
+                    sudo docker compose up -d
                     """
                     )
                 }
             }
         }
     }
+}
