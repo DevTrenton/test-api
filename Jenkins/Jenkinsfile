@@ -2,6 +2,7 @@ def remote = [:]
 remote.name = 'devadmin'
 remote.host = '192.168.100.123'
 remote.allowAnyHosts = true
+remote.sudo = true
 
 pipeline {
     agent any
