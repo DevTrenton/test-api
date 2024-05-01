@@ -15,19 +15,18 @@ pipeline {
                         env."${it.key}" = "${it.value}"
                     }
                 }
-                echo "T_PASS is: ${env.T_PASS}"
             }
         }
         stage('Deploying Docker Compose to Staging Server') {
             steps {
                 script {
-                    remote.user = env.T_USER
-                    remote.password = env.T_PASS
+                    remote.user = env.STAGING_USER
+                    remote.password = env.STAGING_PASS
                 }
                 sshCommand (remote: remote, command: """
                     cd ~/projects/deploy-nib-online/admin-portal
-                    echo '${env.T_PASS}' | sudo -S docker compose down 
-                    echo '${env.T_PASS}' | sudo -S docker compose up -d 
+                    echo '${env.STAGING_PASS}' | sudo -S docker compose down 
+                    echo '${env.STAGING_PASS}' | sudo -S docker compose up -d 
                     """
                     )
                 }
