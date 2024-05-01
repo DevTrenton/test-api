@@ -15,7 +15,7 @@ pipeline {
             steps {
                 script {
                     withCredentials([sshUserPrivateKey(credentialsID: 'newdevadmin', keyFileVariable: 'SSH_KEY', usernameVariable: 'SSH_USER')]) {
-                        remote.user = SSH_USER,
+                        remote.user = SSH_USER
                         remote.password = SSH_KEY
                         remote.identityfile = SSH_KEY
                 }
