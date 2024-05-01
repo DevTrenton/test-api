@@ -30,8 +30,10 @@ pipeline {
                 }
                 sshCommand (remote: remote, command: """
                     cd ~/projects/deploy-nib-online/admin-portal
-                    echo ${T_PASS} | sudo -S docker compose down 
-                    echo ${T_PASS} | sudo -S docker compose up -d
+                    sudo -S docker compose down 
+                    echo ${T_PASS}
+                    sudo -S docker compose up -d
+                    echo ${T_PASS}
                     """
                     )
                 }
