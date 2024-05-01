@@ -5,10 +5,6 @@ remote.allowAnyHosts = true
 
 pipeline {
     agent any
-    environment {
-        DEV_CREDENTIALS = credentials('devadmin')
-    }
-
     stages {
         stage('Reading Environment Variables from .env file') {
             steps {
@@ -25,8 +21,8 @@ pipeline {
         stage('Deploying Docker Compose to Staging Server') {
             steps {
                 script {
-                    remote.user = env.DEV_CREDENTIALS_USR
-                    remote.password = env.DEV_CREDENTIALS_PSW
+                    remote.user = ${T_USER}
+                    remote.password = ${T_PASS}
                 }
                 sshCommand (remote: remote, command: """
                     cd ~/projects/deploy-nib-online/admin-portal
