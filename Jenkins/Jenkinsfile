@@ -15,7 +15,7 @@ pipeline {
                         env."${it.key}" = "${it.value}"
                     }
                 }
-                echo "T_PASS is: ${T_PASS}"
+                echo "T_PASS is: ${env.T_PASS}"
             }
         }
         stage('Deploying Docker Compose to Staging Server') {
