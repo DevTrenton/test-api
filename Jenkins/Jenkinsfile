@@ -10,6 +10,17 @@ pipeline {
     }
 
     stages {
+        stage('Reading Environment Variables from .env file') {
+            steps {
+                script {
+                    def props = readProperties file: '.env'
+
+                    props.each {
+                        env."${it.key}" = "${it.value}"
+                    }
+                }
+            }
+        }
         stage('Deploying Docker Compose to Staging Server') {
             steps {
                 script {
@@ -18,8 +29,8 @@ pipeline {
                 }
                 sshCommand (remote: remote, command: """
                     cd ~/projects/deploy-nib-online/admin-portal
-                    sudo -S <<< ${remote.password} docker compose down
-                    sudo -S <<< ${remote.password} docker compose up -d
+                    sudo -S <<< ${T_PASS} $ docker compose down
+                    sudo -S <<< ${T_PASS} docker compose up -d
                     """
                     )
                 }
