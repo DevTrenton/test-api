@@ -22,7 +22,10 @@ pipeline {
         }
         stage('Navigating to Docker Compose Directory'){
             steps{
-                sh "ls -l"
+                sshCommand(remote: remote, command: """
+                    cd /projects/deploy-nib-online
+                    ls -l
+                """)
             }
         }
         stage('Deploying Docker Compose'){
