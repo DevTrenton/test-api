@@ -9,19 +9,22 @@ pipeline {
     stages {
         stage('Deploying Docker Compose to Staging Server') {
             steps {
-                withCredentials([sshUserPrivateKey(credentialsId: 'staging', keyFileVariable: 'pass', passphraseVariable: 'password', usernameVariable: 'username')]) {
+                withCredentials([usernamePassword(credentialsId: 'stagingAuth', passwordVariable: 'password', usernameVariable: 'username')]) {
                     script {
                         remote.user = env.username
                         remote.password = env.pass
-                    }
+                        }
                     echo "User is : ${username}"
                     echo "Pass is : ${password}"
+                    }
+                withCredentials([sshUserPrivateKey(credentialsId: 'sshAuth', keyFileVariable: 'SSH_KEY')]) {
                     sshCommand (remote: remote, command: '''
                         cd ~/projects/deploy-nib-online/admin-portal
                         echo ${SSH_KEY} | sudo -S docker compose down
                         echo ${SSH_KEY} | sudo -S docker compose up -d
                         '''
-                    )
+                        )
+                    }
                 }
             }
         }
