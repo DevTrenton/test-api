@@ -14,12 +14,13 @@ pipeline {
             steps {
                 script {
                     remote.user = env.DEV_CREDENTIALS_USR
+                    remote.password = env.DEV_CREDENTIALS_PSW
                 }
-                withCredentials([string(credentialsId: 'devadmin', variable: 'DEV_CREDENTIALS_PSW')]) {
+                withCredentials([string(credentialsId: 'devadmin', passwordVariable: 'password', usernameVariable: 'username')]) {
                     sshCommand (remote: remote, command: """
                         cd ~/projects/deploy-nib-online/admin-portal
-                        echo ${DEV_CREDENTIALS_PSW} | sudo -S docker compose down
-                        echo ${DEV_CREDENTIALS_PSW} | sudo -S docker compose up -d
+                        echo ${password} | sudo -S docker compose down
+                        echo ${password} | sudo -S docker compose up -d
                         """
                         )
                 }
