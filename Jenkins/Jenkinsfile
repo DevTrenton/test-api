@@ -12,10 +12,10 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'stagingAuth', passwordVariable: 'password', usernameVariable: 'username')]) {
                     script {
                         remote.user = env.username
-                        remote.password = env.pass
+                        remote.password = env.password
                         }
-                    echo "User is : ${username}"
-                    echo "Pass is : ${password}"
+                    echo "User is : ${remote.user}"
+                    echo "Pass is : ${remote.password}"
                     }
                 withCredentials([sshUserPrivateKey(credentialsId: 'sshAuth', keyFileVariable: 'SSH_KEY')]) {
                     echo "SSH Key is : ${SSH_KEY}"
