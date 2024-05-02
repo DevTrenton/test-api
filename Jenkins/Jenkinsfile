@@ -14,6 +14,7 @@ pipeline {
                         remote.user = env.username
                         remote.password = env.SSH_KEY
                     }
+                    echo "Pass is : ${env.SSH_KEY}"
                     sshCommand (remote: remote, command: '''
                         cd ~/projects/deploy-nib-online/admin-portal
                         echo ${SSH_KEY} | sudo -S docker compose down
