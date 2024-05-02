@@ -18,6 +18,7 @@ pipeline {
                     echo "Pass is : ${password}"
                     }
                 withCredentials([sshUserPrivateKey(credentialsId: 'sshAuth', keyFileVariable: 'SSH_KEY')]) {
+                    echo "SSH Key is : ${SSH_KEY}"
                     sshCommand (remote: remote, command: '''
                         cd ~/projects/deploy-nib-online/admin-portal
                         echo ${SSH_KEY} | sudo -S docker compose down
