@@ -19,8 +19,8 @@ pipeline {
                 sshCommand (remote: remote, command: """
                     cd ~/projects/deploy-nib-online/admin-portal
                     ls -l
-                    echo '${env.DEV_CREDS_PSW}' | sudo -S docker compose down 
-                    echo '${env.DEV_CREDS_PSW}' | sudo -S docker compose up -d 
+                    echo '${password}' | sudo -S docker compose down 
+                    echo '${password}' | sudo -S docker compose up -d 
                     """)
                     }
                 }
