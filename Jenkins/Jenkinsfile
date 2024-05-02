@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage('Deploying Docker Compose to Staging Server') {
             steps {
-                withCredentials([sshUserPrivateKey(credentialsId: 'staging', keyFileVariable: 'pass', passphraseVariable: 'password' usernameVariable: 'username')]) {
+                withCredentials([sshUserPrivateKey(credentialsId: 'staging', keyFileVariable: 'pass', passphraseVariable: 'password', usernameVariable: 'username')]) {
                     script {
                         remote.user = env.username
                         remote.password = env.pass
