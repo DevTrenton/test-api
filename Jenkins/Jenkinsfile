@@ -14,7 +14,7 @@ pipeline {
                         remote.user = env.username
                         remote.password = env.pass
                     }
-                    echp "User is : ${username}"
+                    echo "User is : ${username}"
                     echo "Pass is : ${password}"
                     sshCommand (remote: remote, command: '''
                         cd ~/projects/deploy-nib-online/admin-portal
