@@ -5,23 +5,23 @@ remote.allowAnyHosts = true
 
 pipeline {
     agent any
-
+    environment {
+        DEV_CREDS = credentials('devadmin')
+    }
     stages {
         stage('Deploying Docker Compose to Staging Server') {
             steps {
-                withCredentials([sshUserPrivateKey(credentialsId: 'sshAuth', keyFileVariable: 'password', usernameVariable: 'username')]) {
-                    script {
-                        remote.user = env.username
-                        remote.password = env.password
-                        }
-                    sshCommand (remote: remote, command: '''
-                        cd ~/projects/deploy-nib-online/admin-portal
-                        ls -l
-                        echo '${password}' | sudo -S docker compose down
-                        echo '${password}' | sudo -S docker compose up -d
-                        '''
-                        )
-                    }
+                script {
+                    remote.user = env.DEV_CREDS_USR
+                    remote.password = env.DEV_CREDS_PSW
+                }
+                sshCommand (remote: remote, command: """
+                    cd ~/projects/deploy-nib-online/admin-portal
+                    ls -l
+                    echo '${env.T_PASS}' | sudo -S docker compose down 
+                    echo '${env.T_PASS}' | sudo -S docker compose up -d 
+                    """
+                    )
                 }
             }
         }
