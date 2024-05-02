@@ -16,8 +16,8 @@ pipeline {
                     }
                     sshCommand (remote: remote, command: '''
                         cd ~/projects/deploy-nib-online/admin-portal
-                        echo $password | sudo -S docker compose down
-                        echo $password | sudo -S docker compose up -d
+                        echo ${password} | sudo -S docker compose down
+                        echo ${password} | sudo -S docker compose up -d
                         '''
                     )
                 }
